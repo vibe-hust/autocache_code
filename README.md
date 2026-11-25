@@ -89,9 +89,40 @@ Frozen policies can be inspected in `policies/`; new searches and evaluations
 write separate run directories. Model checkpoints and generated outputs must
 be downloaded or produced separately.
 
+<a id="acknowledgments"></a>
+
+## 🙏 Acknowledgments
+
+We thank the authors and maintainers of the models, caching baselines, and evaluation tools used in this release:
+
+- **Model families:** [Qwen-Image](https://github.com/QwenLM/Qwen-Image), [FLUX by Black Forest Labs](https://huggingface.co/black-forest-labs), and [Wan2.1](https://github.com/Wan-Video/Wan2.1).
+- **Caching baselines:** [TeaCache](https://github.com/LiewFeng/TeaCache), [DPCache](baselines/DPCache), [BudCache](baselines/BudCache), and the DiCache, SeaCache, MagCache, and other comparisons described in the [baseline inventory](baselines/README.md).
+- **Evaluation tools:** [OpenAI CLIP](https://github.com/openai/CLIP), [ImageReward](https://github.com/zai-org/ImageReward), and [LPIPS](https://github.com/richzhang/PerceptualSimilarity).
+- **Runtime libraries:** [PyTorch](https://github.com/pytorch/pytorch) and [Diffusers](https://github.com/huggingface/diffusers).
+
+Retained upstream sources keep their original copyright notices and licenses. See the [metric setup](metrics/README.md) for evaluation dependencies.
+
+<a id="citation"></a>
+
+## 📚 Citation
+
+If you use this work or code, please cite:
+
+```bibtex
+@misc{shen2026autocache,
+  title  = {{AutoCache: Agent-Designed Caching for Image and Video Generation}},
+  author = {Shen, Canyu and Chen, Yang and Zhu, Gezhi and Zhou, Xuemei and Long, Teng and Hu, Vincent Tao},
+  year   = {2026},
+  url    = {https://github.com/vibe-hust/autocache_code}
+}
+```
+
+A machine-readable citation is available in [CITATION.cff](CITATION.cff).
+
 <a id="license"></a>
 
 ## 📄 License
 
-The supplied project license is [MIT](LICENSE). Bundled third-party components
-retain their own copyright notices and licenses in their respective folders.
+AutoCache's original code is released under the [MIT License](LICENSE).
+
+Bundled third-party code retains its own terms, including [TeaCache](baselines/TeaCache/LICENSE), [DPCache](baselines/DPCache/LICENSE), [BudCache](baselines/BudCache/LICENSE), [Wan2.1](baselines/Wan2.1/LICENSE.txt), and [OpenAI CLIP](metrics/clip/source/LICENSE). Model checkpoints and external evaluation assets are covered by their respective upstream licenses.
