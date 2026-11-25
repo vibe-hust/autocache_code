@@ -1,5 +1,14 @@
 # AutoCache: Agent-Designed Caching for Image and Video Generation
 
+<a id="authors"></a>
+
+**👥 Authors:** [Canyu Shen](https://github.com/shuiiiiyu)<sup>1</sup> · [Yang Chen](https://github.com/cheyan9)<sup>2</sup> · [Gezhi Zhu](https://github.com/TetuDegit)<sup>2</sup> · [Xuemei Zhou](https://www.cwi.nl/en/people/xuemei-zhou/)<sup>3</sup> · [Teng Long](https://tenglon.github.io/)<sup>4</sup> · [Vincent Tao Hu](https://taohu.me/)<sup>2</sup>
+
+<sup>1</sup> Tongji University<br>
+<sup>2</sup> Huazhong University of Science and Technology<br>
+<sup>3</sup> Centrum voor Wiskunde en Informatica (CWI)<br>
+<sup>4</sup> University of Trento
+
 [🌐 Project website](https://vibe-hust.github.io/autocache/) · [💻 Code repository](https://github.com/vibe-hust/autocache_code)
 
 AutoCache uses an agent to discover executable caching policies for frozen image
