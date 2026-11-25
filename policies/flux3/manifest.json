@@ -1,0 +1,7 @@
+{
+  "interface": "opal-tensor-signals-v1",
+  "model": "flux3",
+  "method": "residual_cache",
+  "sha256": "b95806551ba5454222e1cd9d363b2d40fc151130150a6726b04150e73e4ca671",
+  "structure_sha256": "dba19896906d549771c44e5361df3b1773453ce92c15ce4fc65bebbc643d28ea"
+}

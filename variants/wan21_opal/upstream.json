@@ -1,0 +1,18 @@
+{
+  "source": "variants/opal_search",
+  "note": "Isolated migration of the frozen Qwen sqrt-NFE search controller and policy interface.",
+  "sha256": {
+    "search.py": "86e471ab39fb97b311166ab642b14cc2486a6ff91b543a0250500a29bb3ff9da",
+    "selection.py": "4a55c80357f63c3d3f9780e81f5d94603268d646771c0e95023ee54c183d7c40",
+    "policy.py": "178445ee0cd1fb753c96ee83d73dba635100d62b7e6885442e207b3cb3716b53",
+    "agent.py": "0d1acc5865f854c84f663db0c43655e88bff060838fc61b78bc1d646ec307002",
+    "agent_cli.py": "6dc5239668f2a8aac21a5bbd393e65a10f7374797f7d76cc531807003eba391a",
+    "diagnostics.py": "3c83015cfbadcb0f76846c527f5e6788f4b3537d36f6c799739f108f4f8a99cf",
+    "__init__.py": "e142fd1ea8de859e457e1512ef6e8e2b1c1c242131473931a0989d9560410cd1",
+    "prompts/search.md": "86de71da248a399eacee649acd53463c4f6f073bf2bf23490395d1abda93f368",
+    "prompts/first_round.md": "a12402b257bafa3f133a027d3b9006729994a0a3b598658bc4cb08e6d9970275",
+    "prompts/later_rounds.md": "d9d7585ee0118cabe4393cf21749ca038a4df7a1db25bec25e7f065c6cf4e82b",
+    "templates/signals.py": "8e4c3a5d8141a780ee21ef3e9a54136a30630428247e42f4dd6c97ae58f2e3f5",
+    "templates/updater.py": "8c88833d06101e141e326df23852a9e49f445fd93a93c8e03b3a279793046b3c"
+  }
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "drawbench_0108",
+    "prompt": "Dininrg tablez.",
+    "category": "Misspellings",
+    "seed": 185
+  },
+  {
+    "id": "drawbench_0029",
+    "prompt": "A blue coloured pizza.",
+    "category": "Conflicting",
+    "seed": 675
+  },
+  {
+    "id": "drawbench_0040",
+    "prompt": "Five cars on the street.",
+    "category": "Counting",
+    "seed": 787
+  },
+  {
+    "id": "drawbench_0103",
+    "prompt": "Supreme Court Justices play a baseball game with the FBI. The FBI is at bat, the justices are on the field.",
+    "category": "Gary Marcus et al. ",
+    "seed": 709
+  },
+  {
+    "id": "drawbench_0056",
+    "prompt": "A triangular orange picture frame. An orange picture frame in the shape of a triangle.",
+    "category": "DALL-E",
+    "seed": 877
+  },
+  {
+    "id": "drawbench_0140",
+    "prompt": "Backlotter.",
+    "category": "Rare Words",
+    "seed": 521
+  },
+  {
+    "id": "drawbench_0192",
+    "prompt": "A sign that says 'Google Brain Toronto'.",
+    "category": "Text",
+    "seed": 998
+  },
+  {
+    "id": "drawbench_0133",
+    "prompt": "A sheep to the right of a wine glass.",
+    "category": "Positional",
+    "seed": 77
+  },
+  {
+    "id": "drawbench_0021",
+    "prompt": "A white car and a red sheep.",
+    "category": "Colors",
+    "seed": 233
+  },
+  {
+    "id": "drawbench_0082",
+    "prompt": "An appliance or compartment which is artificially kept cool and used to store food and drink.",
+    "category": "Descriptions",
+    "seed": 243
+  },
+  {
+    "id": "drawbench_0163",
+    "prompt": "Painting of Mona Lisa but the view is from behind of Mona Lisa.",
+    "category": "Reddit",
+    "seed": 783
+  },
+  {
+    "id": "drawbench_0101",
+    "prompt": "A pear cut into seven pieces arranged in a ring.",
+    "category": "Gary Marcus et al. ",
+    "seed": 283
+  },
+  {
+    "id": "drawbench_0112",
+    "prompt": "An instqrumemnt used for cutting cloth, paper, axdz othr thdin mteroial, consamistng of two blades lad one on tvopb of the other and fhastned in tle mixdqdjle so as to bllow them txo be pened and closed by thumb and fitngesr inserted tgrough rings on kthe end oc thei vatndlzes.",
+    "category": "Misspellings",
+    "seed": 177
+  },
+  {
+    "id": "drawbench_0081",
+    "prompt": "A separate seat for one person, typically with a back and four legs.",
+    "category": "Descriptions",
+    "seed": 687
+  },
+  {
+    "id": "drawbench_0004",
+    "prompt": "A black colored dog.",
+    "category": "Colors",
+    "seed": 769
+  },
+  {
+    "id": "drawbench_0148",
+    "prompt": "A tiger in a lab coat with a 1980s Miami vibe, turning a well oiled science content machine, digital art.",
+    "category": "Reddit",
+    "seed": 772
+  },
+  {
+    "id": "drawbench_0075",
+    "prompt": "A vehicle composed of two wheels held in a frame one behind the other, propelled by pedals and steered with handlebars attached to the front wheel.",
+    "category": "Descriptions",
+    "seed": 380
+  },
+  {
+    "id": "drawbench_0191",
+    "prompt": "A sign that says 'Deep Learning'.",
+    "category": "Text",
+    "seed": 955
+  },
+  {
+    "id": "drawbench_0055",
+    "prompt": "A triangular purple flower pot. A purple flower pot in the shape of a triangle.",
+    "category": "DALL-E",
+    "seed": 377
+  },
+  {
+    "id": "drawbench_0147",
+    "prompt": "A fluffy baby sloth with a knitted hat trying to figure out a laptop, close up, highly detailed, studio lighting, screen reflecting in its eyes.",
+    "category": "Reddit",
+    "seed": 262
+  },
+  {
+    "id": "drawbench_0115",
+    "prompt": "A train on top of a surfboard.",
+    "category": "Positional",
+    "seed": 286
+  },
+  {
+    "id": "drawbench_0039",
+    "prompt": "Four cars on the street.",
+    "category": "Counting",
+    "seed": 16
+  },
+  {
+    "id": "drawbench_0061",
+    "prompt": "A collection of nail is sitting on a table.",
+    "category": "DALL-E",
+    "seed": 54
+  },
+  {
+    "id": "drawbench_0123",
+    "prompt": "A tennis racket underneath a traffic light.",
+    "category": "Positional",
+    "seed": 796
+  },
+  {
+    "id": "drawbench_0035",
+    "prompt": "A fish eating a pelican.",
+    "category": "Conflicting",
+    "seed": 613
+  },
+  {
+    "id": "drawbench_0179",
+    "prompt": "A pyramid made of falafel with a partial solar eclipse in the background.",
+    "category": "Reddit",
+    "seed": 267
+  },
+  {
+    "id": "drawbench_0009",
+    "prompt": "A black colored banana.",
+    "category": "Colors",
+    "seed": 764
+  },
+  {
+    "id": "drawbench_0198",
+    "prompt": "New York Skyline with 'Deep Learning' written with fireworks on the sky.",
+    "category": "Text",
+    "seed": 749
+  },
+  {
+    "id": "drawbench_0049",
+    "prompt": "Two cats and one dog sitting on the grass.",
+    "category": "Counting",
+    "seed": 791
+  },
+  {
+    "id": "drawbench_0138",
+    "prompt": "Peristeronic.",
+    "category": "Rare Words",
+    "seed": 227
+  }
+]

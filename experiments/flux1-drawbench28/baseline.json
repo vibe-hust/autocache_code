@@ -1,0 +1,26 @@
+{
+  "model_path": "models/FLUX.1-dev",
+  "steps": 28,
+  "height": 1024,
+  "width": 1024,
+  "guidance_scale": 3.5,
+  "nfe": 10,
+  "use_hypersd": false,
+  "stage2": false,
+  "prompt_mode": "original",
+  "metrics_python": "python",
+  "metrics": {
+    "names": [
+      "clip_score",
+      "image_reward",
+      "psnr",
+      "ssim",
+      "lpips"
+    ],
+    "clip_model": "metrics/clip/checkpoints/ViT-B-32.pt",
+    "image_reward_checkpoint": "metrics/image_reward/checkpoints/ImageReward.pt",
+    "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
+  },
+  "schedule": "experiments/flux1-drawbench28/budcache-schedule.json",
+  "output_dir": "sampler_runs/flux1-budcache28"
+}

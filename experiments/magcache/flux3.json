@@ -1,0 +1,11 @@
+{
+  "model": "flux3",
+  "generation": "experiments/flux3-drawbench30-170/generation.json",
+  "prompts": "experiments/flux3-drawbench30-170/test.jsonl",
+  "threshold": 0.06,
+  "max_skip_steps": 3,
+  "retention_ratio": 0.2,
+  "reference_results": "sampler_runs/flux3-drawbench/search/test/reference/results.json",
+  "calibration_prompt": "experiments/magcache/flux3-calibration.json",
+  "use_kv_cache": true
+}

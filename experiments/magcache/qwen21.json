@@ -1,0 +1,11 @@
+{
+  "model": "qwen21",
+  "generation": "experiments/qwen21-drawbench30-170/generation.json",
+  "prompts": "experiments/qwen21-drawbench30-170/test.jsonl",
+  "threshold": 0.06,
+  "max_skip_steps": 5,
+  "retention_ratio": 0.1,
+  "reference_results": "sampler_runs/qwen21-drawbench/search/test/reference/results.json",
+  "calibration_prompt": "experiments/magcache/qwen21-calibration.json",
+  "use_kv_cache": true
+}

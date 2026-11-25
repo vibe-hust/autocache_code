@@ -1,0 +1,7 @@
+{
+  "profile": "codex-personal",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "proxy_url": "http://127.0.0.1:36921",
+  "timeout_seconds": 1500
+}

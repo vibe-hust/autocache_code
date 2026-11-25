@@ -1,0 +1,20 @@
+{
+  "model": "flux",
+  "method": "residual_cache",
+  "sampling_profile": "ecad",
+  "model_path": "models/FLUX.1-dev",
+  "dtype": "bfloat16",
+  "device": "cuda:0",
+  "height": 256,
+  "width": 256,
+  "guidance_scale": 5,
+  "max_sequence_length": 512,
+  "reference_steps": 20,
+  "metrics_python": "python",
+  "metrics": {
+    "names": ["clip_score", "image_reward", "psnr", "ssim", "lpips"],
+    "clip_model": "metrics/clip/checkpoints/ViT-B-32.pt",
+    "image_reward_checkpoint": "metrics/image_reward/checkpoints/ImageReward.pt",
+    "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
+  }
+}

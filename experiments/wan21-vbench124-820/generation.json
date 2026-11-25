@@ -1,0 +1,19 @@
+{
+  "model": "wan21",
+  "method": "residual_cache",
+  "model_path": "models/Wan2.1-T2V-1.3B",
+  "official_source": "baselines/Wan2.1",
+  "dtype": "bfloat16",
+  "batch_size": 1,
+  "dependency_site_packages": ".",
+  "reference_steps": 50,
+  "height": 480,
+  "width": 832,
+  "frames": 81,
+  "fps": 16,
+  "solver": "unipc",
+  "shift": 8,
+  "guidance_scale": 6,
+  "t5_cpu": false,
+  "offload_model": false
+}

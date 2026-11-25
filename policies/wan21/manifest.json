@@ -1,0 +1,7 @@
+{
+  "interface": "wan21-opal-step-signals-v3",
+  "model": "wan21",
+  "method": "residual_cache",
+  "sha256": "0c8eb95f00890cefa0b8cdab5642209bc08a3e926f9fe49b56f8c938adf6520d",
+  "structure_sha256": "2f3b8aa0825bc6a8f29a23531273bfbc4013375cdc2edd92fcb75219fd4b52d3"
+}

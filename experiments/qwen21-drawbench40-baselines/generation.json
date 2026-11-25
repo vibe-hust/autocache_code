@@ -1,0 +1,38 @@
+{
+  "model": "qwen21",
+  "method": "baselines",
+  "model_path": "models/Qwen-Image-2.1",
+  "device": "cuda:0",
+  "dtype": "bfloat16",
+  "height": 1024,
+  "width": 1024,
+  "guidance_scale": 1.0,
+  "max_sequence_length": null,
+  "reference_steps": 40,
+  "metrics_python": "python",
+  "metrics": {
+    "names": [
+      "clip_score",
+      "image_reward",
+      "psnr",
+      "ssim",
+      "lpips"
+    ],
+    "clip_model": "metrics/clip/checkpoints/ViT-B-32.pt",
+    "image_reward_checkpoint": "metrics/image_reward/checkpoints/ImageReward.pt",
+    "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
+  },
+  "batch_size": 1,
+  "vae_slicing": true,
+  "prompts": "experiments/qwen21-drawbench40-baselines/prompts.json",
+  "output_dir": "sampler_runs/qwen21-drawbench-baselines",
+  "thresholds": {
+    "teacache": 0.08,
+    "dicache": 0.4,
+    "seacache": 0.3
+  },
+  "gpus": [
+    0,
+    1
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "model": "FLUX.1-dev",
+  "transfer_profile": "experiments/flux1-transfer50/config.json",
+  "search28_profile": "experiments/flux1-drawbench28/search.json",
+  "comparison20_profile": "experiments/flux1-drawbench20/config.json",
+  "dpcache_K": 25,
+  "ecad_released_steps": 20,
+  "prompts": "original DrawBench prompts"
+}

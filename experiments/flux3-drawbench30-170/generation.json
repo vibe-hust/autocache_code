@@ -1,0 +1,25 @@
+{
+  "model": "flux3",
+  "method": "residual_cache",
+  "model_path": "models/flux-3-image-klein-base",
+  "device": "cuda:0",
+  "dtype": "bfloat16",
+  "height": 1024,
+  "width": 1024,
+  "guidance_scale": 4.0,
+  "max_sequence_length": null,
+  "reference_steps": 50,
+  "metrics_python": "python",
+  "metrics": {
+    "names": [
+      "clip_score",
+      "image_reward",
+      "psnr",
+      "ssim",
+      "lpips"
+    ],
+    "clip_model": "metrics/clip/checkpoints/ViT-B-32.pt",
+    "image_reward_checkpoint": "metrics/image_reward/checkpoints/ImageReward.pt",
+    "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
+  }
+}

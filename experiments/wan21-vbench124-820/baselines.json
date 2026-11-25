@@ -1,0 +1,30 @@
+{
+  "steps": 50,
+  "thresholds": {
+    "teacache": 0.08,
+    "dicache": 0.1,
+    "seacache": 0.27
+  },
+  "dicache_ret_ratio": 0.2,
+  "dicache_probe_depth": 1,
+  "t5_cpu": false,
+  "offload_model": false,
+  "weights": "models/Wan2.1-T2V-1.3B",
+  "method_args": {
+    "official": [],
+    "teacache": [
+      "--teacache_thresh",
+      "0.08"
+    ],
+    "dicache": [
+      "--rel_l1_thresh",
+      "0.10",
+      "--ret_ratio",
+      "0.20"
+    ],
+    "seacache": [
+      "--seacache_thresh",
+      "0.27"
+    ]
+  }
+}

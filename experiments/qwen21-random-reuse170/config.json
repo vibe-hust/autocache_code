@@ -1,0 +1,38 @@
+{
+  "generation": {
+    "model": "qwen21",
+    "method": "residual_cache",
+    "model_path": "models/Qwen-Image-2.1",
+    "device": "cuda:0",
+    "dtype": "bfloat16",
+    "height": 1024,
+    "width": 1024,
+    "guidance_scale": 1.0,
+    "max_sequence_length": null,
+    "reference_steps": 40,
+    "metrics_python": "python",
+    "metrics": {
+      "names": [
+        "clip_score",
+        "image_reward",
+        "psnr",
+        "ssim",
+        "lpips"
+      ],
+      "clip_model": "metrics/clip/checkpoints/ViT-B-32.pt",
+      "image_reward_checkpoint": "metrics/image_reward/checkpoints/ImageReward.pt",
+      "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
+    }
+  },
+  "reference_results": "sampler_runs/qwen21-drawbench/search/test/reference/results.json",
+  "policy_seed": 20261116,
+  "reuse_probability": 0.7,
+  "steps": 40,
+  "sample_count": 170,
+  "batch_size": 1,
+  "gpus": [
+    0,
+    1
+  ],
+  "output_dir": "sampler_runs/qwen21-random070"
+}

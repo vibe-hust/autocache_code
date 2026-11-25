@@ -1,0 +1,7 @@
+{
+  "interface": "opal-tensor-signals-v1",
+  "model": "qwen21",
+  "method": "residual_cache",
+  "sha256": "a47f483656cd24eb21bb15b5f665fb451c362ee16928bebf1161020a34b529e2",
+  "structure_sha256": "9d4065d3bc7c316310b2f99b26f5be14583ea5c22c551e870c3bbe0dee0fafe9"
+}

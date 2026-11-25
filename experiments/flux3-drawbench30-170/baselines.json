@@ -1,0 +1,19 @@
+{
+  "steps": 50,
+  "guidance_scale": 4,
+  "prompt_expansion": false,
+  "thresholds": {
+    "teacache": 0.3,
+    "dicache": 0.1,
+    "seacache": 0.3
+  },
+  "dicache_ret_ratio": 0.2,
+  "dicache_probe_depth": 1,
+  "teacache_coefficients": [
+    498.651651,
+    -283.781631,
+    55.8554382,
+    -3.82021401,
+    0.264230861
+  ]
+}

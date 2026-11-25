@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reactive-samplers"
+version = "0.1.0"
+description = "Executable residual-cache policy search for image and video generation"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+metrics = ["image-reward==1.5", "transformers==4.44.2", "timm==0.6.13"]
+
+[project.scripts]
+reactive-samplers = "variants.opal_search.search:main"
+
+[tool.setuptools.packages.find]
+include = ["reactive_samplers*", "variants.opal_search*", "variants.wan21_opal*", "variants.flux3_baselines*", "variants.wan21_baselines*", "variants.flux1_baselines*", "variants.flux1_transfer*", "variants.flux1_comparison*", "variants.random_reuse*", "variants.geneval2*", "variants.magcache*", "variants.seacache*", "baselines.qwen21_cache*", "baselines.BudCache*"]
+
+[tool.setuptools.package-data]
+"variants.opal_search" = ["prompts/*.md", "templates/*.py"]
+"variants.wan21_opal" = ["prompts/*.md", "templates/*.py"]

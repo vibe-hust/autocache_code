@@ -1,0 +1,14 @@
+{
+  "qwen21": {
+    "delta": 0.06,
+    "K": 5,
+    "ret_ratio": 0.1,
+    "steps": 40
+  },
+  "flux3": {
+    "delta": 0.06,
+    "K": 3,
+    "ret_ratio": 0.2,
+    "steps": 50
+  }
+}

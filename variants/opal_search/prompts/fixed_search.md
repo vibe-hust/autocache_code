@@ -1,0 +1,169 @@
+# 1. Objective and scoring
+
+Design reusable whole-backbone residual-cache strategies for Qwen-Image-2.1.
+{{TARGETS}}
+
+For each image:
+    loss = sqrt(NFE) / (CLIPScore + 100*ImageReward + PSNR
+                  + 100*SSIM + 100 - 100*LPIPS)
+
+Strategy loss is the mean of per-image losses over the fixed development set.
+There is no PSNR cap or loss normalization. Only the initial all-NEW control
+has an assigned loss of 1. JSON psnr=null means positive infinity, giving
+per-image formula loss=0. A finite denominator must be positive.
+
+Higher CLIPScore (prompt alignment), ImageReward (human preference), PSNR
+(pixel fidelity), and SSIM (structural fidelity) are better. Lower LPIPS
+(perceptual distance), NFE (full backbone calls), generation time, and loss
+are better. PSNR/SSIM/LPIPS compare with fixed matching all-NEW reference
+images. ImageReward can be negative.
+
+Generation time is measured separately; it is not a term in the loss formula.
+
+# 2. Information available
+
+Read round_input.json in the current workspace.
+
+The first round provides the initial all-NEW strategy and its measured
+results. Subsequent rounds provide every strategy on the current Pareto
+frontier, including its ID, complete code, mean loss, five mean quality
+scores, mean NFE, and mean generation time. Every qualifying new strategy outside
+the frontier is also supplied under qualified_outside_pareto. These two lists
+form the default union without repeating strategy code or scores.
+
+The Pareto frontier contains strategies that no other evaluated strategy
+dominates: dominance requires being no worse on all five quality metrics,
+NFE, and generation time, and strictly better on at least one.
+This preserves multiple useful starting points rather than only the
+lowest-loss strategy. Both qualifying and nonqualifying frontier strategies
+are supplied with quality status.
+
+Each request also provides the current round, requested number of new
+strategies, remaining budget, and new feedback: execution/submission errors
+and newly completed diagnostics.
+
+Available on demand at the supplied paths:
+- Historical strategy code and mean scores, in the same entry format as pareto.
+- Per-image quality scores, NFE, time, and loss.
+- Per-node observations, added signals, actions, conditions, and operands.
+round_input.json lists direct per-strategy and per-image paths under
+on_demand.strategy_materials. Read trajectory_and_observations directly.
+history_strategies contains completed strategies outside the default pool.
+Imported all-NEW references have actions only when observations_available is false.
+
+Read-only project code is available for inspecting the sampling and cache
+implementation.
+
+# 3. Mechanism and editable interface
+
+NEW evaluates the backbone and caches:
+    residual = output_feature - input_feature
+
+REUSE adds the cached residual to the current input feature and executes
+the output head. Both actions execute the original scheduler update.
+Signal extraction and choose run once per image at each sampling node, before
+the current full backbone prediction. Each image has independent state and cache.
+
+Each strategy contains a fixed signal extractor and an editable decision function:
+- signals.py: extract_signals(tensors, state)
+  Keep the supplied initial file unchanged. It returns an empty dictionary.
+- updater.py: choose(observation, signals, state)
+  Returns SkipAction(False) for NEW or SkipAction(True) for REUSE.
+
+The first request's interface object defines the nine base observations,
+their formulas, tensor positions, and supported operations. Use the nine base
+observations and scalar state to design the decision rule.
+
+Tensor inputs are latent, feature, previous_latent, and previous_feature.
+They are isolated per-image copies. Previous tensors refer to the adjacent
+pre-update node and are null initially.
+
+extract_signals remains fixed. choose receives the 'scalars' dictionary only.
+State resets per image. Tensor inputs remain available to diagnostic probes.
+
+Edit only the choose function body in updater.py using the exposed interface. Imports,
+extra helpers, module globals, model calls, file/network access, and
+sample/prompt/seed lookup are outside this interface. Model weights,
+cache payload and boundary, Prefix KV, scheduler, and evaluation settings
+remain framework-owned. Reference trajectories, future nodes, and quality
+scores are not runtime policy inputs.
+
+# 4. Analyze, diagnose, and propose
+
+Connect observed behavior to a testable mechanism hypothesis. Inspect regions
+with high NEW or REUSE frequency, including alternating patterns, and compare
+behavior across samples. Use counterexamples to revise assumptions.
+
+You may change thresholds, stage-dependent conditions, and
+state usage. Build on any completed strategy or design a new rule, naming a
+completed strategy as its comparison parent. For each proposal, briefly state
+the change, supporting evidence, and hypothesis being tested.
+
+Use diagnostics when existing results leave a specific question unresolved.
+For example, does a small average change hide large changes at a few
+positions, or could a new signal distinguish different refresh conditions?
+Choose existing trajectory inspection or a custom tensor probe, then use
+the result to guide the proposals.
+
+Diagnostic options:
+- trajectory: read selected recorded nodes without model calls.
+- probe: run a custom probe.py implementing extract_signals(tensors, state)
+  with independent state and scalar outputs.
+
+A probe replays the fixed development set with unchanged batch composition,
+but collects diagnostics only at selected samples and nodes. The framework
+checks images byte-for-byte and actions against the selected strategy's
+recorded run. Probe costs are tracked separately from formal evaluations.
+Large tensors are saved only when explicitly requested through capture_tensors.
+
+# 5. Handoff, evaluation, and final selection
+
+At each handoff, write exactly one of these files in the current workspace:
+
+A. submission.json — submit the requested batch of strategies:
+
+{"strategies":[{"id":"r01_s01","parent":"initial","path":"strategies/r01_s01",
+"change":"short concrete change","evidence":"strategy IDs or observations",
+"hypothesis":"what this change tests"}]}
+
+Each strategy directory contains only the unchanged initial signals.py and editable updater.py.
+IDs must be unique across the experiment. Submit exactly
+requested_new_strategies distinct packages.
+
+B. diagnostic_request.json — request a diagnostic before submitting:
+
+{"kind":"trajectory","strategy_id":"initial",
+"sample_ids":["sample_id"],"steps":[3,4]}
+
+For a custom probe, set kind="probe" and add "probe_path":"probe.py".
+Optionally add "capture_tensors":["latent"] to save those tensors at the
+selected nodes. Probe reruns consume the search-wide diagnostic budget
+(default: 9). After receiving results, continue the same round and
+submit strategies when ready.
+
+The framework checks, freezes, generates, and evaluates submitted packages.
+You do not need to build your own benchmark to trial strategies before submission;
+the framework handles generation and evaluation after submission.
+Failed attempts consume submission slots. Each round starts with its configured
+batch and allows at most three additional submission batches for failed slots.
+After this limit, the framework advances using the successful archive; a round
+with no new successes retains the previous frontier. No separate report, research notebook,
+or self-reported check results are required.
+
+Default schedule: 10 initial strategy slots in round 1, then 5 in each
+of rounds 2–9. Every strategy is evaluated on the same development samples,
+seeds, and configuration. Results are returned before the next round, using
+the same Agent session.
+
+All results are retained regardless of whether loss improves. Every round continues
+to use the cumulative Pareto frontier and qualifying strategies outside it for feedback.
+Only after all 9 rounds (50 initial slots plus bounded replacements), use
+qualifying new strategies if any; otherwise use all completed new strategies.
+Using development means, select best prompt alignment (highest CLIPScore),
+best preference score (highest ImageReward), best reference fidelity
+(lowest LPIPS), lowest-NFE policy, and balanced policy (lowest existing loss).
+Select categories independently; ties use lower NFE, then lower generation
+time, then strategy ID. Categories may share a strategy. Test each unique
+strategy once on the independent test set; test scores never reselect
+representatives. Report zero qualifying strategies when using the fallback
+pool. The initial all-NEW control is excluded from final selection.

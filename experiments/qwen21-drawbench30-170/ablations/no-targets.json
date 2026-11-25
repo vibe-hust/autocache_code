@@ -1,0 +1,40 @@
+{
+  "generation_config": "experiments/qwen21-drawbench30-170/generation.json",
+  "development_prompts": "experiments/qwen21-drawbench30-170/development.jsonl",
+  "test_prompts": "experiments/qwen21-drawbench30-170/test.jsonl",
+  "output_dir": "sampler_runs/qwen21-no-targets/search",
+  "batch_size": 1,
+  "round_sizes": [
+    10,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5
+  ],
+  "evaluation_gpus": [
+    0,
+    1
+  ],
+  "diagnostic_budget": 9,
+  "max_agent_calls_per_round": 12,
+  "max_replacement_rounds": 3,
+  "state_tensor_bytes": 67108864,
+  "diagnostic_tensor_bytes": 268435456,
+  "agent": {
+    "profile": "codex-personal",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "high",
+    "timeout_seconds": 1500,
+    "command": [
+      "{python}",
+      "{project_root}/site/trento/agent_mailbox.py",
+      "{request}",
+      "{workspace}"
+    ]
+  },
+  "quality_targets": {}
+}

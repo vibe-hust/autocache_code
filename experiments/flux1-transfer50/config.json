@@ -1,0 +1,38 @@
+{
+  "model": "models/FLUX.1-dev",
+  "steps": 50,
+  "height": 256,
+  "width": 256,
+  "guidance_scale": 5,
+  "dtype": "bfloat16",
+  "metrics_python": "python",
+  "checkpoints": {
+    "clip_model": "metrics/clip/checkpoints/ViT-B-32.pt",
+    "image_reward_checkpoint": "metrics/image_reward/checkpoints/ImageReward.pt",
+    "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
+  },
+  "development_prompts": "experiments/flux3-drawbench30-170/development.jsonl",
+  "test_prompts": "experiments/flux3-drawbench30-170/test.jsonl",
+  "output_dir": "sampler_runs/flux1-transfer50",
+  "policy": "policies/flux3",
+  "policy_name": "flux3_frozen",
+  "thresholds": {
+    "dicache": 0.1,
+    "seacache": 0.30
+  },
+  "teacache_threshold": 0.3,
+  "dicache_probe_depth": 1,
+  "dicache_ret_ratio": 0.2,
+  "metrics": {
+    "names": [
+      "clip_score",
+      "image_reward",
+      "psnr",
+      "ssim",
+      "lpips"
+    ],
+    "clip_model": "metrics/clip/checkpoints/ViT-B-32.pt",
+    "image_reward_checkpoint": "metrics/image_reward/checkpoints/ImageReward.pt",
+    "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
+  }
+}
