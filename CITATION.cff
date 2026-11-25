@@ -3,7 +3,7 @@ message: If you use this work or code, please cite the reference below.
 title: 'AutoCache: Agent-Designed Caching for Image and Video Generation'
 type: software
 repository-code: https://github.com/vibe-hust/autocache_code
-url: https://vibe-hust.github.io/autocache/
+url: https://vibe-hust.github.io/autocache_page/
 authors:
 - given-names: Canyu
   family-names: Shen
