@@ -7,6 +7,17 @@ and video generators. This repository contains the search controllers, model
 adapters, baseline implementations, evaluation code, prompt/seed manifests, and
 frozen policies from the prepared paper code release.
 
+
+<a id="method-in-motion"></a>
+
+## 🎬 Method in motion
+
+![AutoCache method animation](docs/assets/method-intro.gif)
+
+Policy search and runtime cache decisions, shown schematically. The displayed decisions are illustrative.
+
+[Static overview](docs/assets/method-overview.png) · [Animation source and notes](docs/method-animation.md)
+
 <a id="setup-and-cpu-configuration-checks"></a>
 
 ## 🛠️ Setup and CPU configuration checks
