@@ -1,13 +1,15 @@
 # AutoCache: Agent-Designed Caching for Image and Video Generation
 
-[Project website](https://vibe-hust.github.io/autocache/) · [Code repository](https://github.com/vibe-hust/autocache_code)
+[🌐 Project website](https://vibe-hust.github.io/autocache/) · [💻 Code repository](https://github.com/vibe-hust/autocache_code)
 
 AutoCache uses an agent to discover executable caching policies for frozen image
 and video generators. This repository contains the search controllers, model
 adapters, baseline implementations, evaluation code, prompt/seed manifests, and
 frozen policies from the prepared paper code release.
 
-## Setup and CPU configuration checks
+<a id="setup-and-cpu-configuration-checks"></a>
+
+## 🛠️ Setup and CPU configuration checks
 
 Use Python 3.10 or newer and run commands from the repository root:
 
@@ -29,7 +31,9 @@ stack. Generation additionally needs the dependencies for the chosen backbone,
 its model weights, and the metric checkpoints listed in the generation config.
 See the bundled baseline requirements and [metric setup](metrics/README.md).
 
-## Components
+<a id="components"></a>
+
+## 🗂️ Components
 
 | Folder | Contents |
 | --- | --- |
@@ -43,7 +47,9 @@ See the bundled baseline requirements and [metric setup](metrics/README.md).
 | `scripts/` | Latency and operator-count measurement utilities |
 | `site/trento/` | Optional Slurm submission and remote agent relay tools |
 
-## Search and evaluation
+<a id="search-and-evaluation"></a>
+
+## 📊 Search and evaluation
 
 The image and video controllers expose `check`, `run`, and `test`. Read the
 [image search guide](variants/opal_search/README.md) or
@@ -63,7 +69,9 @@ Frozen policies can be inspected in `policies/`; new searches and evaluations
 write separate run directories. Model checkpoints and generated outputs must
 be downloaded or produced separately.
 
-## License
+<a id="license"></a>
+
+## 📄 License
 
 The supplied project license is [MIT](LICENSE). Bundled third-party components
 retain their own copyright notices and licenses in their respective folders.
