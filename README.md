@@ -2,12 +2,11 @@
 
 <a id="authors"></a>
 
-**👥 Authors:** [Canyu Shen](https://github.com/shuiiiiyu)<sup>1</sup> · [Yang Chen](https://github.com/cheyan9)<sup>2</sup> · [Gezhi Zhu](https://github.com/TetuDegit)<sup>2</sup> · [Xuemei Zhou](https://www.cwi.nl/en/people/xuemei-zhou/)<sup>3</sup> · [Teng Long](https://tenglon.github.io/)<sup>4</sup> · [Vincent Tao Hu](https://taohu.me/)<sup>2</sup>
+**👥 Authors:** [Canyu Shen](https://github.com/shuiiiiyu)<sup>1</sup> · [Yang Chen](https://github.com/cheyan9)<sup>1</sup> · [Gezhi Zhu](https://github.com/TetuDegit)<sup>1</sup> · [Xuemei Zhou](https://www.cwi.nl/en/people/xuemei-zhou/)<sup>2</sup> · [Teng Long](https://tenglon.github.io/)<sup>3</sup> · [Vincent Tao Hu](https://taohu.me/)<sup>1</sup>
 
-<sup>1</sup> Tongji University<br>
-<sup>2</sup> School of Software Engineering, Huazhong University of Science and Technology<br>
-<sup>3</sup> Centrum voor Wiskunde en Informatica (CWI)<br>
-<sup>4</sup> University of Trento
+<sup>1</sup> School of Software Engineering, Huazhong University of Science and Technology<br>
+<sup>2</sup> Centrum voor Wiskunde en Informatica (CWI)<br>
+<sup>3</sup> University of Trento
 
 [🌐 Project website](https://vibe-hust.github.io/autocache_page/) · <a href="https://github.com/vibe-hust/autocache_code"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/github-mark-white.svg"><img src="docs/assets/github-mark.svg" width="16" height="16" alt="GitHub"></picture> Code repository</a>
 
