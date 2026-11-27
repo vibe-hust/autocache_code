@@ -63,7 +63,7 @@ See the bundled baseline requirements and [metric setup](metrics/README.md).
 | `policies/` | Frozen `signals.py` and `updater.py` policy pairs |
 | `baselines/` | Baseline implementations and retained upstream sources |
 | `metrics/` | Metric support code and bundled CLIP source |
-| `scripts/` | Latency and operator-count measurement utilities |
+| `scripts/` | Operator-count measurement utilities |
 | `site/trento/` | Optional Slurm submission and remote agent relay tools |
 
 <a id="search-and-evaluation"></a>
