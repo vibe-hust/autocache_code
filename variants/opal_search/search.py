@@ -10,6 +10,7 @@ if __package__ in (None, ''):
     sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
     __package__ = 'variants.opal_search'
 
+from reactive_samplers.data import read_prompts
 from reactive_samplers.report import write_json
 from .agent import round_input, invoke, safe_child, strategy_entry
 from .diagnostics import diagnose
@@ -17,6 +18,35 @@ from .evaluate import Evaluator, read, validate_rows, valid_result
 from .parallel import make_evaluator, evaluate_jobs
 from .policy import freeze, source_hash, structure_hash, Runtime
 from .selection import configure, DEFAULT_TARGETS, FLUX_TARGETS, METRICS, LOSS_FORMULA, QUALITY_GATE, REPRESENTATIVE_METRICS, quality_report, pareto, select_representatives, paired
+
+
+def read_rows(path):
+    count = sum(bool(line.strip()) for line in Path(path).read_text(encoding='utf-8').splitlines())
+    return read_prompts(path, count)
+
+
+def validate_split(development, test):
+    for key in ('id', 'prompt'):
+        if {row[key] for row in development} & {row[key] for row in test}:
+            raise ValueError('Final test prompts must be disjoint from development prompts')
+
+
+def configure_targets(config, generation):
+    defaults = FLUX_TARGETS if generation['model'] == 'flux3' else DEFAULT_TARGETS
+    configure(config.get('quality_targets', defaults))
+
+
+def reference_directory(output):
+    output = Path(output).resolve()
+    name = 'references' if output.name == 'search' else f'{output.name}-references'
+    return output.with_name(name)
+
+
+def load_saved_config(path):
+    output = Path(read(path)['output_dir'])
+    config = read(output/'inputs.json')['config']
+    configure_targets(config, config['generation'])
+    return config
 
 
 def load_config(path):
@@ -34,7 +64,7 @@ def load_config(path):
     if sampling_profile is not None: generation['sampling_profile']=sampling_profile
     if type(generation['reference_steps']) is not int or generation['reference_steps']<1: raise ValueError('Positive steps required')
     if config.get('observation_fields') is not None: generation['observation_fields'] = config['observation_fields']
-    configure(config.get('quality_targets', FLUX_TARGETS if generation['model']=='flux3' else DEFAULT_TARGETS))
+    configure_targets(config, generation)
     config={**config,'generation':generation}
     config.setdefault('round_sizes',[10]+[5]*8)
     config.setdefault('batch_size',1)
@@ -49,20 +79,25 @@ def load_config(path):
     if type(config['max_replacement_rounds']) is not int or config['max_replacement_rounds']<0: raise ValueError('Invalid replacement budget')
     if not config['round_sizes'] or any(type(x) is not int or x<1 for x in config['round_sizes']) or sum(config['round_sizes'])<3:
         raise ValueError('Round sizes must be positive, with at least three strategies')
-    from reactive_samplers.data import read_prompts
-    prompt_path=Path(config['development_prompts'])
-    count=sum(bool(line.strip()) for line in prompt_path.read_text().splitlines())
-    rows=read_prompts(prompt_path,count); validate_rows(rows)
+    rows=read_rows(config['development_prompts']); validate_rows(rows)
+    test_rows=read_rows(config['test_prompts'])
+    validate_split(rows, test_rows)
     if not config['agent'].get('command') and not config['agent'].get('model'): raise ValueError('Explicit Agent model required')
     config['rows']=rows
+    config['test_rows']=test_rows
     config['loss']={'formula':LOSS_FORMULA,'psnr_null':'positive infinity; image loss=0',
                     'initial_loss':1,'normalization':False,'aggregation':'mean valid per-image loss; nonpositive denominator=null'}
     config['quality_gate']=json.loads(json.dumps(QUALITY_GATE))
     config['output_dir']=str(Path(config['output_dir']).resolve())
-    if config.get('reference_results'):
-        expected=Evaluator(generation,config['batch_size'],config['state_tensor_bytes']).context(
-            rows,Path(__file__).parent/'templates',True,None)
-        valid_result(config['reference_results'],expected)
+    reference_keys = ('reference_results', 'test_reference_results')
+    prepared_path = reference_directory(config['output_dir'])/'search.json'
+    if prepared_path.is_file() and not any(key in config for key in reference_keys):
+        prepared = read(prepared_path)
+        config.update({key: prepared[key] for key in reference_keys})
+    evaluator = Evaluator(generation, config['batch_size'], config['state_tensor_bytes'])
+    for key, split in zip(reference_keys, (rows, test_rows)):
+        if config.get(key):
+            valid_result(config[key], evaluator.context(split, None, True, None))
     return config
 
 
@@ -246,12 +281,10 @@ def final_table(reference_summary, strategies):
 
 
 def test_selected(config):
-    from reactive_samplers.data import read_prompts
     root=Path(config['output_dir']);selection=read(root/'selected_representatives.json')
-    path=Path(config['test_prompts']);rows=read_prompts(path,sum(bool(x.strip()) for x in path.read_text().splitlines()))
+    rows=config['test_rows'] if 'test_rows' in config else read_rows(config['test_prompts'])
     validate_rows(rows)
-    if {r['id'] for r in rows}&{r['id'] for r in config['rows']} or {r['prompt'] for r in rows}&{r['prompt'] for r in config['rows']}:
-        raise ValueError('Final test prompts must be disjoint from development prompts')
+    validate_split(config['rows'], rows)
     if not selection['strategies']:
         write_json(root/'test/results.json',{'strategies':[],'representatives':{},'selection_status':'no_valid_new_strategy',
             'note':'No completed new strategy available. No test generation or automatic budget extension.',
@@ -263,8 +296,12 @@ def test_selected(config):
         reference=Path(config.get('test_reference_results',root/'test/reference/results.json'))
         if config.get('test_reference_results'):
             ref=valid_result(reference,runner.context(rows,root/'strategies/initial',True,None))
+            write_json(root/'test/reference/results.json', ref)
         else:
             ref=runner.run(rows,root/'strategies/initial',root/'test/reference',initial=True)
+        shared_reference = reference_directory(root)/'test/results.json'
+        if reference.resolve() != shared_reference:
+            write_json(shared_reference, ref)
         results=[]
         jobs=[]
         for r in selection['strategies']:
@@ -288,7 +325,9 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command',choices=['check','run','test'])
     parser.add_argument('config');parser.add_argument('--resume',action='store_true')
-    args=parser.parse_args();config=load_config(args.config)
+    args=parser.parse_args()
+    use_saved = args.command=='test' or (args.command=='run' and args.resume)
+    config=load_saved_config(args.config) if use_saved else load_config(args.config)
     if args.command=='check':
         print(json.dumps({'valid':True,'images':len(config['rows']),'round_sizes':config['round_sizes'],
                           'loss':config['loss'],'gpu_generation':False,'paid_agent_calls':False}))

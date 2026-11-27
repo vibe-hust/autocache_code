@@ -24,7 +24,7 @@
       "image_reward_config": "metrics/image_reward/checkpoints/med_config.json"
     }
   },
-  "reference_results": "sampler_runs/qwen21-drawbench/search/test/reference/results.json",
+  "reference_results": "sampler_runs/qwen21-drawbench/references/test/results.json",
   "policy_seed": 20261116,
   "reuse_probability": 0.7,
   "steps": 40,

@@ -5,7 +5,7 @@
   "threshold": 0.06,
   "max_skip_steps": 3,
   "retention_ratio": 0.2,
-  "reference_results": "sampler_runs/flux3-drawbench/search/test/reference/results.json",
+  "reference_results": "sampler_runs/flux3-drawbench/references/test/results.json",
   "calibration_prompt": "experiments/magcache/flux3-calibration.json",
   "use_kv_cache": true
 }
