@@ -31,11 +31,43 @@ def summary(rows):
     return result
 
 
-def worker(cfg, gpu):
+def load_pipeline(cfg):
     import torch
     from diffusers import QwenImage21Pipeline
+
+    pipe = QwenImage21Pipeline.from_pretrained(
+        cfg['model_path'], torch_dtype=torch.bfloat16, local_files_only=True).to('cuda:0')
+    pipe.transformer.eval().requires_grad_(False)
+    pipe.vae.enable_slicing()
+    return pipe
+
+
+def cache_for(pipe, cfg, method):
+    if method == 'original':
+        return None
+    steps, threshold = cfg['reference_steps'], cfg['thresholds'][method]
+    if method == 'seacache':
+        from variants.seacache.qwen21 import Qwen21SeaCache
+
+        grid = (cfg['height'] // pipe.vae_scale_factor, cfg['width'] // pipe.vae_scale_factor)
+        return Qwen21SeaCache(pipe.transformer, pipe.scheduler, steps, threshold, grid)
     from baselines.qwen21_cache.qwen21_cache import Qwen21Cache
-    from variants.seacache.qwen21 import Qwen21SeaCache
+
+    return Qwen21Cache(pipe.transformer, method, steps, threshold)
+
+
+def generate_image(pipe, cfg, row, callback=None):
+    import torch
+
+    return pipe(prompt=row['prompt'], height=cfg['height'], width=cfg['width'],
+                num_inference_steps=cfg['reference_steps'], true_cfg_scale=cfg['guidance_scale'],
+                use_kv_cache=True,
+                generator=torch.Generator(pipe._execution_device).manual_seed(row['seed']),
+                callback_on_step_end=callback).images[0]
+
+
+def worker(cfg, gpu):
+    import torch
     from reactive_samplers.qwen_metrics import LegacyMetrics
 
     root = Path(cfg['output_dir'])
@@ -48,22 +80,12 @@ def worker(cfg, gpu):
     pending = any((method, row['id']) not in done for method in methods for row in rows)
     if pending:
         print(f'GPU{gpu}: loading Qwen; {len(rows)} prompts, {steps} steps', flush=True)
-        pipe = QwenImage21Pipeline.from_pretrained(
-            cfg['model_path'], torch_dtype=torch.bfloat16, local_files_only=True).to('cuda:0')
-        pipe.transformer.eval().requires_grad_(False)
-        pipe.vae.enable_slicing()
-        grid = (cfg['height'] // pipe.vae_scale_factor, cfg['width'] // pipe.vae_scale_factor)
+        pipe = load_pipeline(cfg)
         for method in methods:
             for row in rows:
                 if (method, row['id']) in done:
                     continue
-                if method == 'original':
-                    cache = None
-                elif method == 'seacache':
-                    cache = Qwen21SeaCache(pipe.transformer, pipe.scheduler, steps,
-                                           cfg['thresholds'][method], grid)
-                else:
-                    cache = Qwen21Cache(pipe.transformer, method, steps, cfg['thresholds'][method])
+                cache = cache_for(pipe, cfg, method)
                 events = []
 
                 def record(pipeline, index, timestep, tensors):
@@ -79,11 +101,7 @@ def worker(cfg, gpu):
                 torch.cuda.synchronize()
                 began = time.perf_counter()
                 with torch.inference_mode(), (cache if cache is not None else nullcontext()):
-                    image = pipe(prompt=row['prompt'], height=cfg['height'], width=cfg['width'],
-                                 num_inference_steps=steps, true_cfg_scale=cfg['guidance_scale'],
-                                 use_kv_cache=True,
-                                 generator=torch.Generator(pipe._execution_device).manual_seed(row['seed']),
-                                 callback_on_step_end=record).images[0]
+                    image = generate_image(pipe, cfg, row, record)
                 torch.cuda.synchronize()
                 elapsed = time.perf_counter() - began
                 folder = root / method

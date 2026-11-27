@@ -19,6 +19,32 @@ def write(path, value):
     tmp.replace(path)
 
 
+def load_pipeline(checkpoint):
+    checkpoint = str(Path(checkpoint).resolve(strict=True))
+    pipe = ModularPipeline.from_pretrained(checkpoint, local_files_only=True)
+    blocks = pipe.blocks
+    blocks.sub_blocks.pop("prompt_upsampler")
+    pipe = blocks.init_pipeline(checkpoint)
+    pipe.load_components(names=["transformer", "text_encoder", "tokenizer", "vae", "scheduler"],
+                         dtype={"vae": torch.float32, "default": torch.bfloat16})
+    if pipe.transformer.config.flow_map:
+        raise ValueError("Expected the Base checkpoint, got the distilled flow map")
+    pipe.to("cuda")
+    pipe.guider = pipe.guider.new(guidance_scale=4.0)
+    return pipe
+
+
+def cache_for(pipe, method, threshold, setup):
+    if method == "official":
+        return nullcontext(([], []))
+    return cache(pipe.transformer, pipe.scheduler, method, threshold, setup["teacache_coefficients"])
+
+
+def generate_image(pipe, row):
+    return pipe(prompt=row["prompt"], height=1024, width=1024, num_inference_steps=50,
+                generator=torch.Generator(device="cuda").manual_seed(row["seed"]), output="images")[0]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=["official", "teacache", "dicache", "seacache"])
@@ -36,21 +62,7 @@ def main():
     root.mkdir(parents=True, exist_ok=True)
     setup = json.loads(Path("experiments/flux3-drawbench30-170/baselines.json").read_text())
     (root/"prompts.json").write_text(json.dumps(rows,ensure_ascii=False))
-    checkpoint = str(Path(args.checkpoint).resolve(strict=True))
-    pipe = ModularPipeline.from_pretrained(checkpoint, local_files_only=True)
-    blocks = pipe.blocks
-    blocks.sub_blocks.pop("prompt_upsampler")
-    pipe = blocks.init_pipeline(checkpoint)
-    pipe.load_components(names=["transformer", "text_encoder", "tokenizer", "vae", "scheduler"],
-                         dtype={"vae": torch.float32, "default": torch.bfloat16})
-    if pipe.transformer.config.flow_map:
-        raise ValueError("Expected the Base checkpoint, got the distilled flow map")
-    pipe.to("cuda")
-    pipe.guider = pipe.guider.new(guidance_scale=4.0)
-
-    def generate(caption, seed):
-        return pipe(prompt=caption, height=1024, width=1024, num_inference_steps=50,
-                    generator=torch.Generator(device="cuda").manual_seed(seed), output="images")[0]
+    pipe = load_pipeline(args.checkpoint)
 
     folder = root / args.mode
     folder.mkdir(exist_ok=True)
@@ -64,12 +76,11 @@ def main():
             if json.loads(record.read_text())["threshold"] != args.threshold:
                 raise ValueError("Choose another output root for a different threshold")
             continue
-        controller = cache(pipe.transformer, pipe.scheduler, args.mode, args.threshold,
-                           setup["teacache_coefficients"]) if cached else nullcontext(([], []))
+        controller = cache_for(pipe, args.mode, args.threshold, setup)
         with controller as (events, _):
             torch.cuda.synchronize()
             start = time.perf_counter()
-            image = generate(caption, row["seed"])
+            image = generate_image(pipe, row)
             torch.cuda.synchronize()
             seconds = time.perf_counter() - start
         image.save(path)

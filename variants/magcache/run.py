@@ -63,22 +63,13 @@ def summarize(rows):
     return out
 
 
-@torch.inference_mode()
-def main():
-    root = Path(sys.argv[1])
-    cfg = read(root/'config.json')
-    model = cfg['model']
-    generation = read(cfg['generation'])
-    rows = ([json.loads(s) for s in Path(cfg['prompts']).read_text().splitlines()]
-            if cfg['prompts'].endswith('.jsonl') else read(cfg['prompts']))
-    if len(rows) != 170:
-        raise ValueError(f'Expected 170 DrawBench prompts, got {len(rows)}')
-    (root/'records').mkdir(exist_ok=True)
-    (root/'images').mkdir(exist_ok=True)
+def check_events(events, full_forwards):
+    if len(events) != full_forwards or not any(not event for event in events):
+        raise RuntimeError(f'MagCache inactive: {len(events)} forwards, {sum(events)} computed')
+
+
+def load_generator(model, generation):
     steps = generation['reference_steps']
-    references = {r['id']: r['image'] for r in read(cfg['reference_results'])['images']}
-    full_forwards = steps * (2 if model == 'flux3' else 1)
-    write_json(root/'status.json', {'stage':'loading','count':len(rows)})
     if model == 'flux3':
         from variants.opal_search.flux3 import load_adapter
         adapter = load_adapter(generation, 'cuda:0')
@@ -96,6 +87,11 @@ def main():
                 true_cfg_scale=1., use_kv_cache=True,
                 generator=torch.Generator(pipe._execution_device).manual_seed(row['seed'])).images[0]
         def sync(): torch.cuda.synchronize()
+    return transformer, generate, sync
+
+
+def calibrate(cfg, steps, transformer, generate):
+    model = cfg['model']
     config = MagCacheConfig(calibrate=True, num_inference_steps=steps,
                             threshold=cfg['threshold'], max_skip_steps=cfg['max_skip_steps'],
                             retention_ratio=cfg['retention_ratio'])
@@ -107,7 +103,6 @@ def main():
             hook.state_manager.set_context(CacheContext(name=f'branch{branch[0] % 2}'))
             branch[0] += 1
         transformer.register_forward_pre_hook(set_branch)
-    write_json(root/'status.json', {'stage':'calibrating'})
     calibration = io.StringIO()
     with contextlib.redirect_stdout(calibration):
         generate(read(cfg['calibration_prompt']))
@@ -115,12 +110,34 @@ def main():
         r'Copy these values to MagCacheConfig\(mag_ratios=\.\.\.\):\s*(\[[^\]]+\])', calibration.getvalue())]
     if not ratios or len(ratios[0]) != steps:
         raise RuntimeError(f'MagCache calibration did not produce {steps} ratios: {calibration.getvalue()[-1000:]}')
-    write_json(root/'calibration.json', {'ratios':ratios,'prompt':cfg['calibration_prompt']})
     monitor.remove()
     config = MagCacheConfig(mag_ratios=ratios[0], num_inference_steps=steps,
                             threshold=cfg['threshold'], max_skip_steps=cfg['max_skip_steps'],
                             retention_ratio=cfg['retention_ratio'])
-    head, events, monitor = install(model, transformer, config)
+    _, events, _ = install(model, transformer, config)
+    return ratios, events
+
+
+@torch.inference_mode()
+def main():
+    root = Path(sys.argv[1])
+    cfg = read(root/'config.json')
+    model = cfg['model']
+    generation = read(cfg['generation'])
+    rows = ([json.loads(s) for s in Path(cfg['prompts']).read_text().splitlines()]
+            if cfg['prompts'].endswith('.jsonl') else read(cfg['prompts']))
+    if len(rows) != 170:
+        raise ValueError(f'Expected 170 DrawBench prompts, got {len(rows)}')
+    (root/'records').mkdir(exist_ok=True)
+    (root/'images').mkdir(exist_ok=True)
+    steps = generation['reference_steps']
+    references = {r['id']: r['image'] for r in read(cfg['reference_results'])['images']}
+    full_forwards = steps * (2 if model == 'flux3' else 1)
+    write_json(root/'status.json', {'stage':'loading','count':len(rows)})
+    transformer, generate, sync = load_generator(model, generation)
+    write_json(root/'status.json', {'stage':'calibrating'})
+    ratios, events = calibrate(cfg, steps, transformer, generate)
+    write_json(root/'calibration.json', {'ratios':ratios,'prompt':cfg['calibration_prompt']})
     metrics = LegacyMetrics(generation['metrics_python'], generation['metrics'])
     completed = []
     try:
@@ -134,8 +151,7 @@ def main():
             sync(); start = time.perf_counter()
             image = generate(row)
             sync(); seconds = time.perf_counter()-start
-            if len(events) != full_forwards or not any(not e for e in events):
-                raise RuntimeError(f'MagCache inactive: {len(events)} forwards, {sum(events)} computed')
+            check_events(events, full_forwards)
             path = root/'images'/(row['id']+'.png')
             image.save(path)
             reference = references.get(row['id'])

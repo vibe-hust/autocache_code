@@ -117,10 +117,8 @@ class Evaluator:
         if self.pipe.param_dtype != torch.bfloat16:
             raise RuntimeError('Unexpected Wan precision')
 
-    def generate(self, row, policy, folder, probe):
-        import torch
+    def prepare_generation(self, row, policy, probe=None):
         from wan.utils.fm_solvers_unipc import FlowUniPCMultistepScheduler
-        from wan.utils.utils import cache_video
         from .adapter import ResidualAdapter
 
         g = self.config
@@ -130,14 +128,26 @@ class Evaluator:
         runtime = Runtime(policy, self.state_bytes, probe)
         adapter = ResidualAdapter(self.pipe.model, runtime, row, scheduler.timesteps,
                                   scheduler.sigmas, g.get('policy_timeout_seconds', 30))
+
+        def render():
+            return self.pipe.generate(row['prompt'], size=(g['width'], g['height']),
+                frame_num=g['frames'], shift=g['shift'], sample_solver=g['solver'],
+                sampling_steps=g['reference_steps'], guide_scale=g['guidance_scale'],
+                seed=row['seed'], offload_model=g['offload_model'])
+
+        return adapter, render
+
+    def generate(self, row, policy, folder, probe):
+        import torch
+        from wan.utils.utils import cache_video
+
+        g = self.config
+        adapter, render = self.prepare_generation(row, policy, probe)
         torch.cuda.synchronize()
         torch.cuda.reset_peak_memory_stats()
         started = time.perf_counter()
         with torch.inference_mode(), adapter:
-            video = self.pipe.generate(row['prompt'], size=(g['width'], g['height']),
-                frame_num=g['frames'], shift=g['shift'], sample_solver=g['solver'],
-                sampling_steps=g['reference_steps'], guide_scale=g['guidance_scale'],
-                seed=row['seed'], offload_model=g['offload_model'])
+            video = render()
             torch.cuda.synchronize()
         seconds = time.perf_counter() - started
         adapter.validate_complete()
@@ -161,7 +171,7 @@ class Evaluator:
             'full_prediction_nodes': sum(t['full_cond'] and t['full_uncond'] for t in adapter.trace),
             'partial_prediction_nodes': sum(t['full_cond'] != t['full_uncond'] for t in adapter.trace), 'encode_seconds': encode_seconds,
             'peak_allocated_bytes': peak}
-        del video, runtime, adapter
+        del video, adapter
         return record
 
     def score(self, reference, candidate):

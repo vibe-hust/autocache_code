@@ -7,9 +7,36 @@ from pathlib import Path
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
+from unittest.mock import patch
 
 from reactive_samplers.report import write_json
 from variants.wan21_opal.evaluate import Evaluator
+
+
+def load_entry(root, method):
+    official = root/"baselines/Wan2.1"
+    source, script = {
+        "official": (official, "generate.py"),
+        "teacache": (root/"baselines/TeaCache/TeaCache4Wan2.1", "teacache_generate.py"),
+        "dicache": (root/"baselines/DiCache/WAN2.1", "run_wan_dicache.py"),
+        "seacache": (root/"baselines/SeaCache/Wan2.1", "seacache_generate.py"),
+    }[method]
+    sys.path[:0] = [str(source), str(official)]
+    spec = importlib.util.spec_from_file_location("wan_upstream_entry", source / script)
+    entry = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(entry)
+    return entry
+
+
+def upstream_args(entry, row, config, method, save_file):
+    argv = [entry.__file__, "--task", "t2v-1.3B", "--size", "832*480",
+            "--ckpt_dir", config["weights"], "--prompt", row["prompt"],
+            "--base_seed", str(row["seed"]), "--sample_steps", str(config["steps"]),
+            "--frame_num", "81", "--sample_shift", "8",
+            "--sample_guide_scale", "6", "--sample_solver", "unipc",
+            "--offload_model", "False", "--save_file", str(save_file)]
+    with patch.object(sys, "argv", argv + config["method_args"][method]):
+        return entry._parse_args()
 
 
 def main():
@@ -26,17 +53,7 @@ def main():
     rows = [json.loads(line) for line in (args.root/"experiments/wan21-vbench124-820/test.jsonl").read_text().splitlines() if line.strip()][args.shard::config["gpus_per_method"]]
     out = args.experiment / args.method
     out.mkdir(parents=True,exist_ok=True)
-    official = args.root/"baselines/Wan2.1"
-    source, script = {
-        "official": (official,"generate.py"),
-        "teacache": (args.root/"baselines/TeaCache/TeaCache4Wan2.1","teacache_generate.py"),
-        "dicache": (args.root/"baselines/DiCache/WAN2.1","run_wan_dicache.py"),
-        "seacache": (args.root/"baselines/SeaCache/Wan2.1","seacache_generate.py"),
-    }[args.method]
-    sys.path[:0] = [str(source),str(official)]
-    spec = importlib.util.spec_from_file_location("wan_upstream_entry", source / script)
-    entry = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(entry)
+    entry = load_entry(args.root, args.method)
     import torch
 
     # Keep one model resident per GPU. The unchanged upstream generate() entry
@@ -93,21 +110,14 @@ def main():
                 pending_scores.append(scoring.submit(score_and_save, previous, metadata))
             continue
         pending = video.with_suffix(".pending.mp4")
-        sys.argv = [str(source / script), "--task", "t2v-1.3B", "--size", "832*480",
-                    "--ckpt_dir", config["weights"], "--prompt", row["prompt"],
-                    "--base_seed", str(row["seed"]), "--sample_steps", str(config["steps"]),
-                    "--frame_num", "81", "--sample_shift", "8",
-                    "--sample_guide_scale", "6", "--sample_solver", "unipc",
-                    "--offload_model", "False", "--save_file", str(pending)]
-        sys.argv += config["method_args"][args.method]
-        upstream_args = entry._parse_args()
+        parsed = upstream_args(entry, row, config, args.method, pending)
         full_predictions = 0
         cold_start = pipeline is None
         torch.cuda.reset_peak_memory_stats()
         torch.cuda.synchronize()
         start = time.perf_counter()
         print("GENERATING", args.method, row["id"], row["seed"], flush=True)
-        entry.generate(upstream_args)
+        entry.generate(parsed)
         torch.cuda.synchronize()
         seconds = time.perf_counter() - start
         if pending.stat().st_size == 0:
