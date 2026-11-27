@@ -24,10 +24,10 @@
     "seed": 709
   },
   {
-    "id": "drawbench_0056",
-    "prompt": "A triangular orange picture frame. An orange picture frame in the shape of a triangle.",
-    "category": "DALL-E",
-    "seed": 877
+    "id": "drawbench_0090",
+    "prompt": "An American multinational technology company that focuses on artificial intelligence, search engine, online advertising, cloud computing, computer software, quantum computing, e-commerce, and consumer electronics.",
+    "category": "Descriptions",
+    "seed": 947
   },
   {
     "id": "drawbench_0140",
@@ -42,10 +42,10 @@
     "seed": 998
   },
   {
-    "id": "drawbench_0133",
-    "prompt": "A sheep to the right of a wine glass.",
+    "id": "drawbench_0124",
+    "prompt": "A zebra underneath a broccoli.",
     "category": "Positional",
-    "seed": 77
+    "seed": 804
   },
   {
     "id": "drawbench_0021",
@@ -60,10 +60,10 @@
     "seed": 243
   },
   {
-    "id": "drawbench_0163",
-    "prompt": "Painting of Mona Lisa but the view is from behind of Mona Lisa.",
+    "id": "drawbench_0142",
+    "prompt": "A church with stained glass windows depicting a hamburger and french fries.",
     "category": "Reddit",
-    "seed": 783
+    "seed": 668
   },
   {
     "id": "drawbench_0101",
@@ -72,16 +72,16 @@
     "seed": 283
   },
   {
-    "id": "drawbench_0112",
-    "prompt": "An instqrumemnt used for cutting cloth, paper, axdz othr thdin mteroial, consamistng of two blades lad one on tvopb of the other and fhastned in tle mixdqdjle so as to bllow them txo be pened and closed by thumb and fitngesr inserted tgrough rings on kthe end oc thei vatndlzes.",
-    "category": "Misspellings",
-    "seed": 177
+    "id": "drawbench_0167",
+    "prompt": "Colouring page of large cats climbing the eifel tower in a cyberpunk future.",
+    "category": "Reddit",
+    "seed": 652
   },
   {
-    "id": "drawbench_0081",
-    "prompt": "A separate seat for one person, typically with a back and four legs.",
-    "category": "Descriptions",
-    "seed": 687
+    "id": "drawbench_0173",
+    "prompt": "A magnifying glass over a page of a 1950s batman comic.",
+    "category": "Reddit",
+    "seed": 75
   },
   {
     "id": "drawbench_0004",
@@ -114,10 +114,10 @@
     "seed": 377
   },
   {
-    "id": "drawbench_0147",
-    "prompt": "A fluffy baby sloth with a knitted hat trying to figure out a laptop, close up, highly detailed, studio lighting, screen reflecting in its eyes.",
+    "id": "drawbench_0174",
+    "prompt": "A car playing soccer, digital art.",
     "category": "Reddit",
-    "seed": 262
+    "seed": 404
   },
   {
     "id": "drawbench_0115",
