@@ -8,7 +8,7 @@
 <sup>2</sup> Centrum voor Wiskunde en Informatica (CWI)<br>
 <sup>3</sup> University of Trento
 
-[🌐 Project website](https://vibe-hust.github.io/autocache_page/) · <a href="https://github.com/vibe-hust/autocache_code"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/github-mark-white.svg"><img src="docs/assets/github-mark.svg" width="16" height="16" alt="GitHub"></picture> Code repository</a>
+[🌐 Project website](https://vibe-hust.github.io/autocache_page/) · <a href="https://github.com/vibe-hust/autocache_code"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/github-mark-white.svg"><img src="docs/assets/github-mark.svg" width="16" height="16" alt="GitHub"></picture> Code repository</a> · [📄 Paper](https://vibe-hust.github.io/autocache_page/AutoCache-paper.pdf)
 
 AutoCache uses an agent to discover executable caching policies for frozen image
 and video generators. This repository contains the search controllers, model
