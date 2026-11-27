@@ -46,49 +46,6 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## 🚀 Quick Start
-
-### Example 1: FLUX (Text-to-Image)
-
-**Inference with pre-calibrated cost matrix:**
-```bash
-python dpcache_flux_infer.py --mode infer \
-    --k 13 \
-    --first_full_steps 3 \
-    --dataset drawbench \
-    --sample_size 100 \
-    --output_path "flux_output"
-```
-
-**Calibration (generate custom cost matrix):**
-```bash
-python dpcache_flux_infer.py --mode calibrate \
-    --cali_prefix "flux_calibration" \
-    --dataset drawbench \
-    --sample_rule fix \
-    --sample_size 10 \
-    --output_path "calibration_results"
-```
-
-This will generate a cost matrix file named `final_cost_matrix_flux_calibration.pkl`. Use it in inference via `--cost_matrix_path "final_cost_matrix_flux_calibration.pkl"`.
-
-
-### Example 2: Wan2.1 (Image-to-Video)
-
-**Inference with pre-calibrated cost matrix:**
-```bash
-python dpcache_wan_infer.py --mode infer \
-    --image_path test.jpg \
-    --prompt "a blue car driving down a dirt road near train tracks" \
-    --k 12
-```
-
-**Disable cache (baseline):**
-```bash
-python dpcache_wan_infer.py --mode infer --no_cache
-```
-
-
 ## 🔧 Adapt to Your Own Model
 
 DPCache can be integrated into other diffusion models. Follow these steps:

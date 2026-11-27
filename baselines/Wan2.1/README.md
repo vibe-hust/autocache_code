@@ -117,10 +117,10 @@ pip install -r requirements.txt
 > * For the first-last frame to video generation, we train our model primarily on Chinese text-video pairs. Therefore, we recommend using Chinese prompt to achieve better results.
 
 
-Download models using huggingface-cli:
+Download models using the Hugging Face CLI:
 ``` sh
-pip install "huggingface_hub[cli]"
-huggingface-cli download Wan-AI/Wan2.1-T2V-14B --local-dir ./Wan2.1-T2V-14B
+pip install "huggingface_hub>=0.34"
+hf download Wan-AI/Wan2.1-T2V-14B --local-dir ./Wan2.1-T2V-14B
 ```
 
 Download models using modelscope-cli:

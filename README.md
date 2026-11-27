@@ -81,7 +81,7 @@ relay through `agent.command`. That relay requires an operator-configured SSH
 host, CLI installation, and existing authentication. For a local agent, remove
 `agent.command` to use the built-in `agent_cli.py`, and configure `agent.model`,
 `agent.profile`, and `agent.reasoning_effort` for your own installation. The
-relay worker's options are documented by `site/trento/bridge_worker.py --help`.
+relay worker's options are documented by `python site/trento/bridge_worker.py --help`.
 Credentials and authentication state are not included in this repository.
 
 Frozen policies can be inspected in `policies/`; new searches and evaluations
