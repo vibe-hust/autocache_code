@@ -1,13 +1,13 @@
 <div align="center">
 
 <p align="center">
-  <img src="__assets__/dicache_logo.png" height=150>
+  <img src="https://raw.githubusercontent.com/Bujiazi/DiCache/fdbe20b669c9174bbed5ec994de073fd881c8010/__assets__/dicache_logo.png" height=150>
 </p>
 
 <h1>DiCache: Let Diffusion Model Determine Its Own Cache</h1>
 
 <div>
-    <a href="https://bujiazi.github.io/" target="_blank">Jiazi Bu*</a><sup></sup> | 
+    Jiazi Bu*<sup></sup> |
     <a href="https://github.com/LPengYang/" target="_blank">Pengyang Ling*</a><sup></sup> | 
     <a href="https://github.com/YujieOuO" target="_blank">Yujie Zhou*</a><sup></sup> |
     <a href="https://codegoat24.github.io/" target="_blank">Yibin Wang</a><sup></sup> <br> 
@@ -44,7 +44,7 @@
 
 ## 🎨 Overview
 <div style="width: 100%; text-align: center; margin:auto;">
-    <img style="width:100%" src="__assets__/dicache_teaser.png">
+    <img style="width:100%" src="https://raw.githubusercontent.com/Bujiazi/DiCache/fdbe20b669c9174bbed5ec994de073fd881c8010/__assets__/dicache_teaser.png">
 </div>
 <br>
 
@@ -58,7 +58,7 @@
 
 ## 💻 Method
 <div style="width: 100%; text-align: center; margin:auto;">
-    <img style="width:100%" src="__assets__/dicache_pipeline.png">
+    <img style="width:100%" src="https://raw.githubusercontent.com/Bujiazi/DiCache/fdbe20b669c9174bbed5ec994de073fd881c8010/__assets__/dicache_pipeline.png">
 </div>
 <br>
 

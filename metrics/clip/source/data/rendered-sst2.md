@@ -1,6 +1,6 @@
 # The Rendered SST2 Dataset
 
-In the paper, we used an image classification dataset called Rendered SST2, to evaluate the model's capability on optical character recognition. To do so, we rendered the sentences in the [Standford Sentiment Treebank v2](https://nlp.stanford.edu/sentiment/treebank.html) dataset and used those as the input to the CLIP image encoder.
+In the paper, we used an image classification dataset called Rendered SST2, to evaluate the model's capability on optical character recognition. To do so, we rendered the sentences in the [Stanford Sentiment Treebank v2](https://huggingface.co/datasets/stanfordnlp/sst) dataset and used those as the input to the CLIP image encoder.
 
 The following command will download a 131MB archive countaining the images and extract into a subdirectory `rendered-sst2`:
 

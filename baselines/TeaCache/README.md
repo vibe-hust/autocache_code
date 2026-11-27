@@ -57,7 +57,7 @@
 </h5>
 
 
-![visualization](./assets/tisser.png)
+![visualization](https://raw.githubusercontent.com/ali-vilab/TeaCache/7c10efc4702c6b619f47805f7abe4a7a08085aa0/assets/tisser.png)
 
 ## 🫖 Introduction 
 We introduce Timestep Embedding Aware Cache (TeaCache), a training-free caching approach that estimates and leverages the fluctuating differences among model outputs across timesteps, thereby accelerating the inference. TeaCache works well for Video Diffusion Models, Image Diffusion models and Audio Diffusion Models. For more details and results, please visit our [project page](https://liewfeng.github.io/TeaCache/).
@@ -113,30 +113,30 @@ If you develop/use TeaCache in your projects and you would like more people to s
 ## 🎉 Supported Models 
 **Text to Video**
 - [TeaCache4Wan2.1](./TeaCache4Wan2.1/README.md)
-- [TeaCache4Cosmos](./eval/TeaCache4Cosmos/README.md)
-- [TeaCache4CogVideoX1.5](./TeaCache4CogVideoX1.5/README.md)
-- [TeaCache4LTX-Video](./TeaCache4LTX-Video/README.md)
-- [TeaCache4Mochi](./TeaCache4Mochi/README.md)
-- [TeaCache4HunyuanVideo](./TeaCache4HunyuanVideo/README.md)
-- [TeaCache4CogVideoX](./eval/teacache/README.md)
-- [TeaCache4Open-Sora](./eval/teacache/README.md)
-- [TeaCache4Open-Sora-Plan](./eval/teacache/README.md)
-- [TeaCache4Latte](./eval/teacache/README.md)
+- [TeaCache4Cosmos](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4Cosmos/README.md)
+- [TeaCache4CogVideoX1.5](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4CogVideoX1.5/README.md)
+- [TeaCache4LTX-Video](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4LTX-Video/README.md)
+- [TeaCache4Mochi](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4Mochi/README.md)
+- [TeaCache4HunyuanVideo](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4HunyuanVideo/README.md)
+- [TeaCache4CogVideoX](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/eval/teacache/README.md)
+- [TeaCache4Open-Sora](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/eval/teacache/README.md)
+- [TeaCache4Open-Sora-Plan](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/eval/teacache/README.md)
+- [TeaCache4Latte](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/eval/teacache/README.md)
 
  **Image to Video** 
 - [TeaCache4Wan2.1](./TeaCache4Wan2.1/README.md)
-- [TeaCache4Cosmos](./eval/TeaCache4Cosmos/README.md)
-- [TeaCache4CogVideoX1.5](./TeaCache4CogVideoX1.5/README.md)
-- [TeaCache4ConsisID](./TeaCache4ConsisID/README.md)
+- [TeaCache4Cosmos](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4Cosmos/README.md)
+- [TeaCache4CogVideoX1.5](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4CogVideoX1.5/README.md)
+- [TeaCache4ConsisID](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4ConsisID/README.md)
 
  **Text to Image**
-- [TeaCache4Lumina2](./TeaCache4Lumina2/README.md)
-- [TeaCache4HiDream-I1](./TeaCache4HiDream-I1/README.md)
+- [TeaCache4Lumina2](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4Lumina2/README.md)
+- [TeaCache4HiDream-I1](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4HiDream-I1/README.md)
 - [TeaCache4FLUX](./TeaCache4FLUX/README.md)
-- [TeaCache4Lumina-T2X](./TeaCache4Lumina-T2X/README.md)
+- [TeaCache4Lumina-T2X](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4Lumina-T2X/README.md)
 
  **Text to Audio**
-- [TeaCache4TangoFlux](./TeaCache4TangoFlux/README.md)
+- [TeaCache4TangoFlux](https://github.com/ali-vilab/TeaCache/blob/7c10efc4702c6b619f47805f7abe4a7a08085aa0/TeaCache4TangoFlux/README.md)
 
 ## 🤖 Instructions for Supporting Other Models 
 - **Welcome for PRs to support other models.**

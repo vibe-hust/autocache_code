@@ -1,7 +1,7 @@
 # Wan2.1
 
 <p align="center">
-    <img src="assets/logo.png" width="400"/>
+    <img src="https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/logo.png" width="400"/>
 <p>
 
 <p align="center">
@@ -163,7 +163,7 @@ This repository supports two Text-to-Video models (1.3B and 14B) and two resolut
 
 ##### (1) Without Prompt Extension
 
-To facilitate implementation, we will start with a basic version of the inference process that skips the [prompt extension](#2-using-prompt-extention) step.
+To facilitate implementation, we will start with a basic version of the inference process that skips the [prompt extension](#2-using-prompt-extension) step.
 
 - Single-GPU inference
 
@@ -207,7 +207,7 @@ Extending the prompts can effectively enrich the details in the generated videos
 
 - Use the Dashscope API for extension.
   - Apply for a `dashscope.api_key` in advance ([EN](https://www.alibabacloud.com/help/en/model-studio/getting-started/first-api-call-to-qwen) | [CN](https://help.aliyun.com/zh/model-studio/getting-started/first-api-call-to-qwen)).
-  - Configure the environment variable `DASH_API_KEY` to specify the Dashscope API key. For users of Alibaba Cloud's international site, you also need to set the environment variable `DASH_API_URL` to 'https://dashscope-intl.aliyuncs.com/api/v1'. For more detailed instructions, please refer to the [dashscope document](https://www.alibabacloud.com/help/en/model-studio/developer-reference/use-qwen-by-calling-api?spm=a2c63.p38356.0.i1).
+  - Configure the environment variable `DASH_API_KEY` to specify the Dashscope API key. For users of Alibaba Cloud's international site, you also need to set the environment variable `DASH_API_URL` to `https://dashscope-intl.aliyuncs.com/api/v1`. For more detailed instructions, please refer to the [dashscope document](https://www.alibabacloud.com/help/en/model-studio/developer-reference/use-qwen-by-calling-api?spm=a2c63.p38356.0.i1).
   - Use the `qwen-plus` model for text-to-video tasks and `qwen-vl-max` for image-to-video tasks.
   - You can modify the model used for extension with the parameter `--prompt_extend_model`. For example:
 ```sh
@@ -326,7 +326,7 @@ torchrun --nproc_per_node=8 generate.py --task i2v-14B --size 1280*720 --ckpt_di
 ##### (2) Using Prompt Extension
 
 
-The process of prompt extension can be referenced [here](#2-using-prompt-extention).
+The process of prompt extension can be referenced [here](#2-using-prompt-extension).
 
 Run with local prompt extension using `Qwen/Qwen2.5-VL-7B-Instruct`:
 ```
@@ -446,7 +446,7 @@ torchrun --nproc_per_node=8 generate.py --task flf2v-14B --size 1280*720 --ckpt_
 ##### (2) Using Prompt Extension
 
 
-The process of prompt extension can be referenced [here](#2-using-prompt-extention).
+The process of prompt extension can be referenced [here](#2-using-prompt-extension).
 
 Run with local prompt extension using `Qwen/Qwen2.5-VL-7B-Instruct`:
 ```
@@ -572,7 +572,7 @@ torchrun --nproc_per_node=8 generate.py --dit_fsdp --t5_fsdp --ulysses_size 8 --
 Through manual evaluation, the results generated after prompt extension are superior to those from both closed-source and open-source models.
 
 <div align="center">
-    <img src="assets/t2v_res.jpg" alt="" style="width: 80%;" />
+    <img src="https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/t2v_res.jpg" alt="" style="width: 80%;" />
 </div>
 
 
@@ -581,7 +581,7 @@ Through manual evaluation, the results generated after prompt extension are supe
 We also conducted extensive manual evaluations to evaluate the performance of the Image-to-Video model, and the results are presented in the table below. The results clearly indicate that **Wan2.1** outperforms both closed-source and open-source models.
 
 <div align="center">
-    <img src="assets/i2v_res.png" alt="" style="width: 80%;" />
+    <img src="https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/i2v_res.png" alt="" style="width: 80%;" />
 </div>
 
 
@@ -591,7 +591,7 @@ We test the computational efficiency of different **Wan2.1** models on different
 
 
 <div align="center">
-    <img src="assets/comp_effic.png" alt="" style="width: 80%;" />
+    <img src="https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/comp_effic.png" alt="" style="width: 80%;" />
 </div>
 
 > The parameter settings for the tests presented in this table are as follows:
@@ -615,7 +615,7 @@ We propose a novel 3D causal VAE architecture, termed **Wan-VAE** specifically d
 
 
 <div align="center">
-    <img src="assets/video_vae_res.jpg" alt="" style="width: 80%;" />
+    <img src="https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/video_vae_res.jpg" alt="" style="width: 80%;" />
 </div>
 
 
@@ -624,7 +624,7 @@ We propose a novel 3D causal VAE architecture, termed **Wan-VAE** specifically d
 **Wan2.1** is designed using the Flow Matching framework within the paradigm of mainstream Diffusion Transformers. Our model's architecture uses the T5 Encoder to encode multilingual text input, with cross-attention in each transformer block embedding the text into the model structure. Additionally, we employ an MLP with a Linear layer and a SiLU layer to process the input time embeddings and predict six modulation parameters individually. This MLP is shared across all transformer blocks, with each block learning a distinct set of biases. Our experimental findings reveal a significant performance improvement with this approach at the same parameter scale.
 
 <div align="center">
-    <img src="assets/video_dit_arch.jpg" alt="" style="width: 80%;" />
+    <img src="https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/video_dit_arch.jpg" alt="" style="width: 80%;" />
 </div>
 
 
@@ -639,13 +639,13 @@ We propose a novel 3D causal VAE architecture, termed **Wan-VAE** specifically d
 
 We curated and deduplicated a candidate dataset comprising a vast amount of image and video data. During the data curation process, we designed a four-step data cleaning process, focusing on fundamental dimensions, visual quality and motion quality. Through the robust data processing pipeline, we can easily obtain high-quality, diverse, and large-scale training sets of images and videos.
 
-![figure1](assets/data_for_diff_stage.jpg "figure1")
+![figure1](https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/data_for_diff_stage.jpg "figure1")
 
 
 ##### Comparisons to SOTA
 We compared **Wan2.1** with leading open-source and closed-source models to evaluate the performance. Using our carefully designed set of 1,035 internal prompts, we tested across 14 major dimensions and 26 sub-dimensions. We then compute the total score by performing a weighted calculation on the scores of each dimension, utilizing weights derived from human preferences in the matching process. The detailed results are shown in the table below. These results demonstrate our model's superior performance compared to both open-source and closed-source models.
 
-![figure1](assets/vben_vs_sota.png "figure1")
+![figure1](https://raw.githubusercontent.com/Wan-Video/Wan2.1/9737cba9c1c3c4d04b33fcad41c111989865d315/assets/vben_vs_sota.png "figure1")
 
 
 ## Citation

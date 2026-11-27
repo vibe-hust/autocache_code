@@ -32,7 +32,7 @@ DPCache accelerates diffusion models via prediction-based caching, using dynamic
 | Model | Type | Reference Implementation |
 |-------|------|------------------------|
 | [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) | Text-to-Image | [`dpcache_flux.py`](dpcache_flux.py) |
-| [Wan2.1-I2V-14B-720P](https://huggingface.co/Wan-AI/Wan2.1-I2V-14B-720P-Diffusers) | Image-to-Video | [`dpcache_wan.py`](dpcache_wan.py) |
+| [Wan2.1-I2V-14B-720P](https://huggingface.co/Wan-AI/Wan2.1-I2V-14B-720P-Diffusers) | Image-to-Video | [`dpcache_wan.py`](https://github.com/argsss/DPCache/blob/5d9dcad55b8092be1e4879c5ac256aefa4ab1fdc/dpcache_wan.py) |
 
 
 ## 📋 Requirements
@@ -59,14 +59,14 @@ By default, this repo uses **Taylor expansion-based predictors** (as in TaylorSe
 
 **Reference implementations:**
 - [`dpcache_flux.py`](dpcache_flux.py)  - Integration with FLUX transformer blocks
-- [`dpcache_wan.py`](dpcache_wan.py) - Integration with Wan2.1 transformer blocks
+- [`dpcache_wan.py`](https://github.com/argsss/DPCache/blob/5d9dcad55b8092be1e4879c5ac256aefa4ab1fdc/dpcache_wan.py) - Integration with Wan2.1 transformer blocks
 
 For adapting other diffusion models, please refer directly to the above files for how to:
 - initialize cache with `init_cache`
 - manage caching logic via `CacheHelper` in the main transformer forward
 - cache or reuse block outputs inside each transformer block
 
-![visualization](./assets/overview.png)
+![visualization](https://raw.githubusercontent.com/argsss/DPCache/5d9dcad55b8092be1e4879c5ac256aefa4ab1fdc/assets/overview.png)
 
 ## 📖 Citation
 
